@@ -1,0 +1,29 @@
+const { getDoctorAllAppointments,getDoctorAllConfirmedAppointments,getDoctorAllUpcomingAppointments} = require("../controllers/appointmentcontroller");
+const { PatientRegister, loginRegister, addnewAdmin, getallDoctors, getUserDetails,adminLogout, patientLogout, addnewDoctor,
+     DoctorRegister, getDoctorById, getallUsers, getMyProfile, updatePrescription, getDoctorProfileById,doctorProfile} = require("../controllers/userController");
+
+const {isPatientAuthenticated,isAdminAuthenticated,isDoctorAuthenticated}=require("../middlewares/auth");
+const express = require("express");
+const router = express.Router();
+
+router.post("/patient/register", PatientRegister);
+router.get("/getallusers", getallUsers);
+router.post("/login", loginRegister);
+router.post("/admin/addnew", isAdminAuthenticated, addnewAdmin);
+router.get("/doctors", getallDoctors);
+router.get("/doctors/:id", getDoctorById);
+router.get("/admin/me", isAdminAuthenticated, getUserDetails);
+router.get("/patient/me", isPatientAuthenticated, getUserDetails);
+router.get("/admin/logout", isAdminAuthenticated, adminLogout);
+router.get("/patient/logout", isPatientAuthenticated, patientLogout);
+router.post("/doctor/addnew", isAdminAuthenticated, addnewDoctor);
+router.post("/register", DoctorRegister);
+router.put("/update-prescription", isPatientAuthenticated, updatePrescription);
+router.get('/me', isPatientAuthenticated, getMyProfile);
+router.get("/getdoctor/:id", getDoctorProfileById);
+router.get('/doctor/appointment/all',isDoctorAuthenticated,getDoctorAllAppointments)
+router.get('/doctor/appointment/confirmed',isDoctorAuthenticated,getDoctorAllConfirmedAppointments)
+router.get('/doctor/appointment/upcoming',isDoctorAuthenticated,getDoctorAllUpcomingAppointments);
+router.get('/doctor/profile',isDoctorAuthenticated,doctorProfile);
+
+module.exports = router
